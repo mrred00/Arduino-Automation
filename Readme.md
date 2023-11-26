@@ -1,14 +1,16 @@
 ### Arduino Kodu Açıklaması
 
+Bu Arduino projesi, bir mikrodenetleyici olan Arduino kullanarak LED'leri ve düğmeleri kontrol eden basit bir örnektir.
+
 #### Global Değişkenler:
-- `int i;`: Döngülerde kullanılmak üzere bir sayacı temsil eder.
-- `const int buton1 = 10;`: Birinci düğme pin numarasını temsil eder.
-- `const int buton2 = 11;`: İkinci düğme pin numarasını temsil eder.
+- `int i;`: Döngülerde kullanılan sayacı temsil eder.
+- `const int buton1 = 10;`: Birinci düğmenin bağlı olduğu pin numarası.
+- `const int buton2 = 11;`: İkinci düğmenin bağlı olduğu pin numarası.
 
 #### `setup()` Fonksiyonu:
-- `for` döngüsü, 3 ile 7 arasındaki pinleri `OUTPUT` olarak ayarlar.
-- `pinMode(buton1, INPUT);` ve `pinMode(buton2, INPUT);` ile düğmelerin pin modlarını belirler.
-- İlk `for` döngüsü, 3 ile 7 arasındaki pinleri `HIGH` olarak ayarlar.
+- `for` döngüsü, 3 ile 7 arasındaki pinleri çıkış olarak ayarlar.
+- `pinMode(buton1, INPUT);` ve `pinMode(buton2, INPUT);`: Düğmelerin pin modlarını belirler.
+- İlk `for` döngüsü, 3 ile 7 arasındaki pinleri başlangıçta yüksek voltajda (HIGH) ayarlar.
 
 #### `loop()` Fonksiyonu:
 - `button1` ve `button2`, ilgili düğmelerin durumlarını okur.
@@ -26,30 +28,27 @@
 - Aksi takdirde, `bt1` ve `bt2`'yi true yapar.
 
 ---
+### Kod Çalışma Mantığı
 
-### GitHub README.md Dosyası
+Tabii ki, şimdi kodun çalışma mantığını daha ayrıntılı bir şekilde açıklayalım:
 
-```markdown
-# Arduino Projesi
+### Kodun Çalışma Mantığı
 
-Bu proje, Arduino üzerinde birkaç LED ve iki düğme kullanarak basit bir kontrol mekanizması sağlar.
+1. **Pin Ayarları:**
+   - `setup()` fonksiyonunda, 3 ila 7 arasındaki pinler çıkış (OUTPUT) olarak ayarlanır. Bu pinler, LED'leri kontrol etmek için kullanılacaktır.
+   - `buton1` ve `buton2` pinleri giriş (INPUT) olarak ayarlanır, çünkü bunlar düğmeleri temsil eder.
 
-## Devre Şeması
+2. **LED Başlangıç Durumu:**
+   - İlk `for` döngüsü ile 3 ila 7 arasındaki pinlere bağlı LED'ler, başlangıçta yüksek voltajda (HIGH) ayarlanır.
 
-![Devre Şeması](link_to_circuit_diagram.png)
+3. **Düğme 1 Kontrolü:**
+   - `loop()` fonksiyonunda, `button1` değişkeni ile birinci düğmenin durumu okunur.
+   - Eğer birinci düğme basılı ise (`button1 == 1`) ve `bt1` true ise, belirli pinlere `HIGH` ve `LOW` değerleri atanır. Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
 
-## Nasıl Kullanılır
+4. **Düğme 2 Kontrolü:**
+   - `button2` değişkeni ile ikinci düğmenin durumu okunur.
+   - Eğer ikinci düğme basılı ise (`button2 == 1`) ve `bt2` true ise, belirli bir deseni gösteren bir döngü çalıştırılır. Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
 
-1. Devreyi kurun.
-2. Arduino'yu bilgisayarınıza bağlayın.
-3. Arduino IDE kullanarak kodu yükleyin.
-
-## Bağımlılıklar
-
-- [Arduino IDE](https://www.arduino.cc/en/software)
-
-## Arduino Kodu Açıklaması
-
-Kodun içeriğini [buradan](code.ino) inceleyebilirsiniz.
-
-```
+5. **Her İki Düğmenin Birlikte Basılması Kontrolü:**
+   - Eğer hem birinci düğme (`button1`) hem de ikinci düğme (`button2`) basılı ise, belirli bir deseni gösterir.
+   - Ardından, `bt1` ve `bt2`'yi false yapar ve belirli bir süre boyunca LED'leri belirli bir desende yanıp sönmesine izin verir. Bu süre sonunda, belirli bir LED'i söndürür ve `bt1` ve `bt2`'yi tekrar true yapar.
