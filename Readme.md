@@ -16,8 +16,7 @@ To create an Arduino program that controls a sequential LED lighting system usin
 1. **Header Comments:**
    ```cpp
    /*
-   This code is created by Harun Yahya Aydın
-   for the 12th-grade Robotics Coding Exam.
+   This code is created by MR.Red
    */
    ```
 
