@@ -1,54 +1,118 @@
-### Arduino Kodu Açıklaması
+**Tutorial: Creating a Sequential LED Lighting System with Arduino**
 
-Bu Arduino projesi, bir mikrodenetleyici olan Arduino kullanarak LED'leri ve düğmeleri kontrol eden basit bir örnektir.
+# Support Me
+<p><a href="https://www.buymeacoffee.com/mailharunts"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="" /></a></p><br><br><br><br>
 
-#### Global Değişkenler:
-- `int i;`: Döngülerde kullanılan sayacı temsil eder.
-- `const int buton1 = 10;`: Birinci düğmenin bağlı olduğu pin numarası.
-- `const int buton2 = 11;`: İkinci düğmenin bağlı olduğu pin numarası.
+**Objective:**
+To create an Arduino program that controls a sequential LED lighting system using two buttons. The system includes different lighting patterns activated by pressing the buttons.
 
-#### `setup()` Fonksiyonu:
-- `for` döngüsü, 3 ile 7 arasındaki pinleri çıkış olarak ayarlar.
-- `pinMode(buton1, INPUT);` ve `pinMode(buton2, INPUT);`: Düğmelerin pin modlarını belirler.
-- İlk `for` döngüsü, 3 ile 7 arasındaki pinleri başlangıçta yüksek voltajda (HIGH) ayarlar.
+**Components:**
+- Arduino board
+- 14 LEDs (connected to pins 4 to 13)
+- 2 push buttons (connected to pins 2 and 3)
 
-#### `loop()` Fonksiyonu:
-- `button1` ve `button2`, ilgili düğmelerin durumlarını okur.
+**Code Explanation:**
 
-##### Düğme 1 Kontrolü:
-- Eğer `button1` 1'e eşit ve `bt1` true ise, belirli pinlere `HIGH` ve `LOW` değerleri atanır.
-- Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
+1. **Header Comments:**
+   ```cpp
+   /*
+   This code is created by Harun Yahya Aydın
+   for the 12th-grade Robotics Coding Exam.
+   */
+   ```
 
-##### Düğme 2 Kontrolü:
-- Eğer `button2` 1'e eşit ve `bt2` true ise, belirli bir deseni gösteren bir döngü çalıştırılır.
-- Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
+   The code begins with comments indicating the author, purpose, and context of the code.
 
-##### Her İki Düğmenin Birlikte Basılması Kontrolü:
-- Eğer hem `button1` hem de `button2` 1'e eşitse, belirli bir deseni gösterir ve ardından `bt1` ve `bt2`'yi false yapar.
-- Aksi takdirde, `bt1` ve `bt2`'yi true yapar.
+2. **Pin Definitions:**
+   ```cpp
+   #define buton1 2
+   #define buton2 3
+   ```
 
----
-### Kod Çalışma Mantığı
+   Constants are defined for button pins to make the code more readable.
 
-Tabii ki, şimdi kodun çalışma mantığını daha ayrıntılı bir şekilde açıklayalım:
+3. **Global Variables:**
+   ```cpp
+   byte i;
+   bool durum1 = true, durum2 = true, durum3 = true;
+   int sure = 150, sureBlink = 500;
+   ```
 
-### Kodun Çalışma Mantığı
+   Global variables are declared for loop control, button states, and delay durations.
 
-1. **Pin Ayarları:**
-   - `setup()` fonksiyonunda, 3 ila 7 arasındaki pinler çıkış (OUTPUT) olarak ayarlanır. Bu pinler, LED'leri kontrol etmek için kullanılacaktır.
-   - `buton1` ve `buton2` pinleri giriş (INPUT) olarak ayarlanır, çünkü bunlar düğmeleri temsil eder.
+4. **Setup Function:**
+   ```cpp
+   void setup() {
+     for (int i = 4; i < 14; i++) {
+       pinMode(i, OUTPUT);
+     }
+     Serial.begin(9600);
+     Serial.println("Hello World!");
+     pinMode(buton1, INPUT);
+     pinMode(buton2, INPUT);
+   }
+   ```
 
-2. **LED Başlangıç Durumu:**
-   - İlk `for` döngüsü ile 3 ila 7 arasındaki pinlere bağlı LED'ler, başlangıçta yüksek voltajda (HIGH) ayarlanır.
+   The `setup` function initializes pin modes for LEDs and buttons and sets up serial communication.
 
-3. **Düğme 1 Kontrolü:**
-   - `loop()` fonksiyonunda, `button1` değişkeni ile birinci düğmenin durumu okunur.
-   - Eğer birinci düğme basılı ise (`button1 == 1`) ve `bt1` true ise, belirli pinlere `HIGH` ve `LOW` değerleri atanır. Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
+5. **Loop Function:**
+   ```cpp
+   void loop() {
+     // LED initialization
+     digitalWrite(12, LOW);
+     digitalWrite(13, LOW);
 
-4. **Düğme 2 Kontrolü:**
-   - `button2` değişkeni ile ikinci düğmenin durumu okunur.
-   - Eğer ikinci düğme basılı ise (`button2 == 1`) ve `bt2` true ise, belirli bir deseni gösteren bir döngü çalıştırılır. Aksi takdirde, tüm pinler `HIGH` olarak ayarlanır.
+     // Button check and LED sequence
+     if (digitalRead(buton1) == 1 && digitalRead(buton2) == 1 && durum3) {
+       // ... (LED sequence for both buttons pressed)
+     } else {
+       durum1 = true;
+       durum2 = true;
+       durum3 = true;
+     }
 
-5. **Her İki Düğmenin Birlikte Basılması Kontrolü:**
-   - Eğer hem birinci düğme (`button1`) hem de ikinci düğme (`button2`) basılı ise, belirli bir deseni gösterir.
-   - Ardından, `bt1` ve `bt2`'yi false yapar ve belirli bir süre boyunca LED'leri belirli bir desende yanıp sönmesine izin verir. Bu süre sonunda, belirli bir LED'i söndürür ve `bt1` ve `bt2`'yi tekrar true yapar.
+     if (digitalRead(buton2) == 1 && durum2) {
+       // ... (LED sequence for button 2 pressed)
+     }
+
+     if (digitalRead(buton1) == 1 && durum1) {
+       // ... (LED sequence for button 1 pressed)
+     }
+   }
+   ```
+
+   The `loop` function checks the button states and controls LED sequences based on the button pressed.
+
+6. **Button 1 Sequence:**
+   ```cpp
+   if (digitalRead(buton1) == 1 && durum1) {
+     // ... (LED sequence for button 1 pressed)
+   }
+   ```
+
+   This section defines the LED sequence when button 1 is pressed.
+
+7. **Button 2 Sequence:**
+   ```cpp
+   if (digitalRead(buton2) == 1 && durum2) {
+     // ... (LED sequence for button 2 pressed)
+   }
+   ```
+
+   This section defines the LED sequence when button 2 is pressed.
+
+8. **Both Buttons Pressed Sequence:**
+   ```cpp
+   if (digitalRead(buton1) == 1 && digitalRead(buton2) == 1 && durum3) {
+     // ... (LED sequence for both buttons pressed)
+   } else {
+     durum1 = true;
+     durum2 = true;
+     durum3 = true;
+   }
+   ```
+
+   This section defines the LED sequence when both buttons are pressed simultaneously.
+
+**Conclusion:**
+This tutorial explains how to create an Arduino program for a sequential LED lighting system controlled by two buttons. The code includes sections for each button's sequence and a combined sequence when both buttons are pressed. Customize the code and experiment with different LED patterns to enhance your understanding of Arduino programming.
